@@ -19,7 +19,9 @@ function App() {
 
     
   const modal = useRef();
-  const selectedPlace = useRef();
+  //const selectedPlace = useRef();
+  // So we switch from managing the modal in an imperative way to managing it in a declarative way.
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [availablePlaces, setAvailablePlaces] = useState([])
   const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);// to initialize our picked places
 
@@ -38,12 +40,14 @@ function App() {
 
   
   function handleStartRemovePlace(id) {
-    modal.current.open();
+    //modal.current.open();
+    setModalIsOpen(true);
     selectedPlace.current = id;
   }
 
   function handleStopRemovePlace() {
-    modal.current.close();
+    //modal.current.close();
+    setModalIsOpen(false);
   }
 
   function handleSelectPlace(id) {
@@ -70,7 +74,8 @@ function App() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    modal.current.close();
+    //modal.current.close();
+    setModalIsOpen(false);
 
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
     localStorage.setItem(
@@ -82,7 +87,7 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal}>
+      <Modal open={modalIsOpen}> // calling the useState
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
