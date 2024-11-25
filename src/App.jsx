@@ -87,7 +87,7 @@ function App() {
 
   return (
     <>
-      <Modal open={modalIsOpen}> // calling the useState
+      <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
