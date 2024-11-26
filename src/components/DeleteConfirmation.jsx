@@ -1,4 +1,8 @@
 import { useEffect } from 'react';
+import ProgressBar from './ProgressBar.jsx';
+
+//to avoid repeating set of time
+const TIMER = 3000;
 
 //responsible for rendering the content of modal
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
@@ -7,15 +11,18 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
     console.log('TIMER SET');
     const timer = setTimeout(() => {
       onConfirm();
-    }, 3000);
+    }, TIMER);
 
     //clean up function to stop timer
     //would also run if effect function run again
     return () => {
       console.log('Cleaning up timer')
       clearTimeout(timer);
-    }
-  }, []);
+    };
+  }, [onConfirm]); 
+  // reexecute this function, can trigger infinite loop
+  //one dependency need, danger in creating infinite loop
+  // if dependency is function, bec func is in the end defined in app component
   
 
   return (
@@ -30,6 +37,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
           Yes
         </button>
       </div>
+      <ProgressBar timer={TIMER}/>
     </div>
   );
 }

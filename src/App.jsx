@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
@@ -16,9 +16,6 @@ const storedPlaces = storedIds.map((id) =>
 );
 
 function App() {
-
-    
-  const modal = useRef();
   const selectedPlace = useRef();
   // So we switch from managing the modal in an imperative way to managing it in a declarative way.
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -70,20 +67,23 @@ function App() {
     }
   }
 
-  function handleRemovePlace() {
+  // to avoid infite loop use useCallback
+  // useCallback returns a value, inner function is not recreated
+  // also take dependecy
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     //modal.current.close();
-    setModalIsOpen(false);
+    //setModalIsOpen(false);
 
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
     localStorage.setItem(
       'selectedPlaces',
       JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current))
     );
-
-  }
+  }, []); //empty array is fine, ther is nothing could be changed and func wont recreate
+  
 
   return (
     <>
