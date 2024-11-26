@@ -19,7 +19,7 @@ function App() {
 
     
   const modal = useRef();
-  //const selectedPlace = useRef();
+  const selectedPlace = useRef();
   // So we switch from managing the modal in an imperative way to managing it in a declarative way.
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [availablePlaces, setAvailablePlaces] = useState([])
